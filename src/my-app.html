@@ -23,6 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-tree/paper-tree.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/juicy-ace-editor/juicy-ace-editor.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -112,7 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			</app-drawer>
 
 			<!-- Main content -->
-			<app-header-layout>
+			<app-header-layout fullbleed>
 				<app-header condenses reveals effects="waterfall">
 					<app-toolbar>
 						<paper-icon-button icon="my-icons:menu"
@@ -124,8 +125,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 						</paper-icon-button>
 					</app-toolbar>
 				</app-header>
-			
-				<my-view1 name="view1"></my-view1>
+				<juicy-ace-editor style="height:100%" theme="ace/theme/monokai"
+						mode="ace/mode/markdown">MEM0</juicy-ace-editor>
 				<!--
 				<iron-pages
 						selected="[[page]]"
@@ -145,7 +146,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<script>
 		Polymer({
 			is: 'my-app',
-
+/*
 			properties: {
 				page: {
 					type: String,
@@ -175,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			_showPage404: function() {
 				this.page = 'view404';
 			},
-
+*/
 			set_pressed: function()
 			{
 				Polymer.dom().querySelector('my-app').$.config.open();
