@@ -21,6 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-tree/paper-tree.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -44,20 +46,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			.paper-tree {
 				margin: 0 20px;
 			}
-/*
-			.drawer-list a {
-				display: block;
-				padding: 0 16px;
-				text-decoration: none;
-				color: var(--app-secondary-color);
-				line-height: 40px;
-			}
-
-			.drawer-list a.iron-selected {
-				color: black;
-				font-weight: bold;
-			}
-*/
 		</style>
 		<app-location route="{{route}}"></app-location>
 		<app-route
@@ -68,39 +56,77 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 		<app-drawer-layout fullbleed>
 			<!-- Drawer content -->
-			<app-drawer id="drawer">
+			<app-drawer id="browser" swipe-open>
+				<!--Note browser -->
+				<div style = "overflow:auto;">
 				<app-toolbar>Note Browser</app-toolbar>
 				<paper-tree data = 
-				'{
-					"name" : "Default folder",
-					"open" : true,
-					"children":
-					[
-						{
-							"name" : "Memo1"
+						'{
+							"name" : "Default folder",
+							"icon":"icons:folder",
+							"open" : true,
+							"children":
+							[
+								{
+									"name" : "Memo1",
+									"icon" : "icons:receipt"
+								},
+								{
+									"name" : "Memo2",
+									"icon" : "icons:receipt"
+								}
+							]
+						}'
+						actions = 
+						'[{
+							"label" : "Delete",
+							"event" : "rm"
 						},
 						{
-							"name" : "Memo2"
-						}
-					]
-				}'
-				actions = 
-				'[{
-					"label" : "Delete",
-					"event" : "rm"
-				}]'></paper-tree>
+							"label" : "Rename",
+							"event" : "rename"
+						},
+						{
+							"label" : "move",
+							"event" : "mv"
+						}]'>
+				</paper-tree>
+				</div>
+				<paper-item>
+					<div style="width:100%"></div>
+					<paper-icon-button id="search" icon="icons:search"></paper-icon-button>
+					<paper-icon-button id="add" icon="icons:add"></paper-icon-button>
+				</paper-item>
+			</app-drawer>
+
+			<app-drawer id="config" select='.config' align="end">
+				<paper-item>
+					<paper-checkbox>Option 1</paper-checkbox>
+				</paper-item>
+				<paper-item>
+					<paper-checkbox>Option 2</paper-checkbox>
+				</paper-item>
+				<paper-item>
+					<paper-checkbox>Option 3</paper-checkbox>
+				</paper-item>
 			</app-drawer>
 
 			<!-- Main content -->
 			<app-header-layout>
-
 				<app-header condenses reveals effects="waterfall">
 					<app-toolbar>
-						<paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+						<paper-icon-button icon="my-icons:menu"
+								toggle-drawer style="display: none;">
+						</paper-icon-button>
 						<div main-title>NoteP.ad</div>
+						<paper-icon-button id="setting" icon="icons:settings"
+								on-tap="set_pressed">
+						</paper-icon-button>
 					</app-toolbar>
 				</app-header>
-
+			
+				<my-view1 name="view1"></my-view1>
+				<!--
 				<iron-pages
 						selected="[[page]]"
 						attr-for-selected="name"
@@ -111,6 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					<my-view3 name="view3"></my-view3>
 					<my-view404 name="view404"></my-view404>
 				</iron-pages>
+				-->
 			</app-header-layout>
 		</app-drawer-layout>
 	</template>
@@ -134,8 +161,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			_routePageChanged: function(page) {
 				this.page = page || 'view1';
 
-				if (!this.$.drawer.persistent) {
-					this.$.drawer.close();
+				if (!this.$.browser.persistent) {
+					this.$.browser.close();
 				}
 			},
 
@@ -148,6 +175,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			_showPage404: function() {
 				this.page = 'view404';
 			},
+
+			set_pressed: function()
+			{
+				Polymer.dom().querySelector('my-app').$.config.open();
+			}
 		});
 	</script>
 </dom-module>
